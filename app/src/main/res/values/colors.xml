@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="black_dark">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="white_opacity">#50ffffff</color>
+    <color name="black">#000000</color>
+    <color name="green">#23cf34</color>
+    <color name="transparent">#00000000</color>
+    <color name="transparent_40">#CAFFFFFF</color>
+    <color name="transparent_dark">#abffffff</color>
+    <color name="transparent_gray">#67000000</color>
+    <color name="transparent_gray_shade_darkest">#cd000000</color>
+    <color name="transparent_gray_shade_1">#87000000</color>
+    <color name="transparent_gray_shade">#32000000</color>
+    <color name="transparent_gray_light">#23000000</color>
+    <color name="transparent_primary">#67012fa7</color>
+    <color name="grey_text">#a8a8a8</color>
+    <color name="purple_dark">#634865</color>
+    <color name="red">#ff2323</color>
+    <color name="transparent_notification">#80FFFFFF</color>
+    <color name="orange">#F57D65</color>
+    <color name="orange_radio">#fe3405</color>
+    <color name="gray_light_bg">#f8f8f8</color>
+
+    <color name="orange_transparent">#6BF57D65</color>
+    <color name="white_opacity_95">#F2FFFFFF</color>
+    <color name="gray">#b7b7b7</color>
+    <color name="textColor">#ec008c</color>
+    <color name="yellow">#fff200</color>
+    <color name="pink_text">#F03AA2</color>
+    <color name="light_black">#323232</color>
+</resources>

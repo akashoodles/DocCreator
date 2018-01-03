@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomSheetLayout"
+    android:layout_height="600dp"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="60dp"
+
+    app:layout_behavior="@string/bottom_sheet_behavior"
+
+    >
+    <TextView
+        android:textStyle="bold"
+        android:text="@string/select_any_option"
+        android:textColor="@color/black"
+        android:id="@+id/mTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_margin="20dp"/>
+
+
+    <TextView
+        android:padding="8dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:id="@+id/tv_add"
+        android:textColor="@color/black"
+        android:layout_width="match_parent"
+        android:textAllCaps="false"
+        android:gravity="center"
+        android:elevation="5dp"
+        android:textSize="18sp"
+        android:layout_height="wrap_content"
+        android:text="@string/add_image" />
+    <View
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@color/grey_text"
+        android:layout_width="match_parent"
+        android:layout_height=".5dp"/>
+
+
+
+    <TextView
+        android:id="@+id/tv_continue"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:padding="8dp"
+        android:textColor="@color/black"
+        android:layout_width="match_parent"
+        android:textAllCaps="false"
+        android:gravity="center"
+        android:elevation="5dp"
+        android:textSize="18sp"
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content"
+        android:text="@string/cont" />
+    <View
+        android:visibility="gone"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@color/grey_text"
+        android:layout_width="match_parent"
+        android:layout_height=".5dp"/>
+
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_share"
+        android:padding="8dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:text="@string/share"
+        android:textColor="@color/black"/>
+
+
+
+
+
+
+</LinearLayout>

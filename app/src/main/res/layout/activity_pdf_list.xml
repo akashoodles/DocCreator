@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.akash.demoapplication.ui.activity.PdfListActivity">
+    <TextView
+      android:layout_marginLeft="9dp"
+        android:textStyle="bold"
+        android:id="@+id/txv_heading"
+        android:layout_marginBottom="4dp"
+        android:textSize="17sp"
+        android:padding="5dp"
+        android:text="@string/select_any_pdf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <ListView
+        android:elevation="2dp"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/listview_boder"
+        android:layout_below="@+id/txv_heading"
+        android:id="@+id/lv_pdf_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
+
+</RelativeLayout>

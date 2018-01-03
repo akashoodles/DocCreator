@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Doc creater</string>
+    <string name="please_select_category">Please select the category</string>
+    <string name="convert_the_image">Please select the type in which you want to convert doccument.</string>
+    <string name="select_any_pdf">Select a pdf to share , print , preview.</string>
+    <string name="view"> View</string>
+    <string name="print"> Print</string>
+    <string name="share"> Share</string>
+    <string name="select_any_option">Select any option.</string>
+    <string-array name="category">
+        <item>Create new pdf</item>
+        <item>Create new doc</item>
+    </string-array>
+    <string-array name="generate_category">
+
+        <item>c new docs</item>
+        <item>create new pdf</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_image">Add Image</string>
+    <string name="cont">Continue</string>
+
+</resources>
