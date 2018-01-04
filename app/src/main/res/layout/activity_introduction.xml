@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="25dp">
+        android:padding="15dp">
     <com.example.akash.demoapplication.utils.CustomTextView
         android:id="@+id/txtHeading"
         android:layout_width="match_parent"
@@ -40,15 +40,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:textSize="18sp"
-                android:layout_marginRight="8dp"
+                android:textSize="16sp"
                 android:text="@string/create_pdf" />
        <RadioButton
            android:id="@+id/rbtn_doc"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_weight="0.5"
-           android:textSize="18sp"
+           android:textSize="16sp"
            android:text="@string/create_doc"/>
    </RadioGroup>
 
