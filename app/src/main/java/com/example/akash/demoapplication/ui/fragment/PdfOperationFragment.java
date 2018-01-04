@@ -5,7 +5,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
 import android.os.Build;
@@ -54,118 +53,6 @@ import static android.content.Context.PRINT_SERVICE;
 public class PdfOperationFragment extends BottomSheetDialogFragment implements View.OnClickListener {
     private int position = -1;
     private File file;
-    private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
-
-        @Override
-        public void onStateChanged(@NonNull View bottomSheet, int newState) {
-            if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                dismiss();
-            }
-        }
-
-        @Override
-        public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-        }
-    };
-    private PrintManager mgr;
-
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_lula_bottom_sheet_dialog, container, false);
-        position = getArguments().getInt(AppConstant.PDF_POSITION);
-        mgr = (PrintManager) getActivity().getSystemService(PRINT_SERVICE);
-        v.findViewById(R.id.tv_print).setOnClickListener(this);
-        v.findViewById(R.id.tv_share).setOnClickListener(this);
-        v.findViewById(R.id.tv_view).setOnClickListener(this);
-        return v;
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.tv_print:
-                file = new File(FileUtils.getOutputMediaFileForPdf().getPath() + File.separator
-                        + FileUtils.getOutputMediaFileForPdf().list()[position]);
-//                    Intent printIntent = new Intent(getActivity(), PrintDialogActivity.class);
-//                    printIntent.setDataAndType(Uri.fromFile(file), "MIME");
-//                    printIntent.putExtra("title", "");
-//                    startActivity(printIntent);
-                PrintManager printManager = (PrintManager) getActivity().getSystemService(Context.PRINT_SERVICE);
-                PrintAttributes pdfPrintAttrs = new PrintAttributes.Builder().
-                        setMediaSize(PrintAttributes.MediaSize.ISO_A6).
-                        setMinMargins(new PrintAttributes.Margins(0, 200, -200, 200)).
-                        build();
-                String jobName = getString(R.string.app_name) + " Document";
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    printManager.print(jobName, pda, pdfPrintAttrs);
-                } else {
-                    Toast.makeText(getActivity(), "Please update your mobile for this feature", Toast.LENGTH_SHORT).show();
-                }
-
-               // doPhotoPrint();
-
-                break;
-            case R.id.tv_share:
-                sharePdf(position);
-                break;
-            case R.id.tv_view:
-                viewPdf(position);
-                break;
-        }
-        dismiss();
-
-    }
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void doPhotoPrint() {
-        PrintHelper photoPrinter = new PrintHelper(getActivity());
-        photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
-        ArrayList<Bitmap> list = pdfToBitmap();
-//        for (int i=0;i<list.size();i++)
-//        {
-            photoPrinter.printBitmap("droids.jpg - test print", list.get(1));
-
-//        }
-    }
-
-    private PrintJob print(String name, PrintDocumentAdapter adapter,
-                           PrintAttributes attrs) {
-        getActivity().startService(new Intent(getActivity(), PrintJobMonitorService.class));
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            return (mgr.print(name, adapter, attrs));
-        }
-        return null;
-    }
-
-    private void viewPdf(int position) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(new File(FileUtils.getOutputMediaFileForPdf().getPath() + File.separator
-                + FileUtils.getOutputMediaFileForPdf().list()[position])), "application/pdf");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivity(intent);
-
-    }
-
-    private void sharePdf(int position) {
-        Intent share = new Intent();
-        share.setAction(Intent.ACTION_SEND);
-        share.setType("application/pdf");
-        share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(FileUtils.getOutputMediaFileForPdf().getPath() + File.separator
-                + FileUtils.getOutputMediaFileForPdf().list()[position])));
-        // share.setPackage("com.whatsapp");
-        startActivity(share);
-    }
-
     PrintDocumentAdapter pda = new PrintDocumentAdapter() {
 
 
@@ -279,40 +166,151 @@ public class PdfOperationFragment extends BottomSheetDialogFragment implements V
 
         }
     };
-       @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-      private ArrayList<Bitmap> pdfToBitmap() {
-           ArrayList<Bitmap> bitmaps = new ArrayList<>();
+    private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
 
-           try {
-               PdfRenderer renderer = new PdfRenderer(ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY));
+        @Override
+        public void onStateChanged(@NonNull View bottomSheet, int newState) {
+            if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                dismiss();
+            }
+        }
 
-               Bitmap bitmap;
-               final int pageCount = renderer.getPageCount();
-               for (int i = 0; i < pageCount; i++) {
-                   PdfRenderer.Page page = renderer.openPage(i);
+        @Override
+        public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+        }
+    };
+    private PrintManager mgr;
 
-                   int width = getResources().getDisplayMetrics().densityDpi / 72 * page.getWidth();
-                   int height = getResources().getDisplayMetrics().densityDpi / 72 * page.getHeight();
-                   bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-                   page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
+    }
 
-                   bitmaps.add(bitmap);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_lula_bottom_sheet_dialog, container, false);
+        position = getArguments().getInt(AppConstant.PDF_POSITION);
+        mgr = (PrintManager) getActivity().getSystemService(PRINT_SERVICE);
+        v.findViewById(R.id.tv_print).setOnClickListener(this);
+        v.findViewById(R.id.tv_share).setOnClickListener(this);
+        v.findViewById(R.id.tv_view).setOnClickListener(this);
+        return v;
+    }
 
-                   // close the page
-                   page.close();
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_print:
+                file = new File(FileUtils.getOutputMediaFileForPdf().getPath() + File.separator
+                        + FileUtils.getOutputMediaFileForPdf().list()[position]);
+//                    Intent printIntent = new Intent(getActivity(), PrintDialogActivity.class);
+//                    printIntent.setDataAndType(Uri.fromFile(file), "MIME");
+//                    printIntent.putExtra("title", "");
+//                    startActivity(printIntent);
+                PrintManager printManager = (PrintManager) getActivity().getSystemService(Context.PRINT_SERVICE);
+                PrintAttributes pdfPrintAttrs = new PrintAttributes.Builder().
+                        setMediaSize(PrintAttributes.MediaSize.ISO_A4).
+                        setMinMargins(new PrintAttributes.Margins(0, 0, -200, 0)).
+                        build();
+                String jobName = getString(R.string.app_name) + " Document";
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    printManager.print(jobName, pda, pdfPrintAttrs);
+                } else {
+                    Toast.makeText(getActivity(), "Please update your mobile for this feature", Toast.LENGTH_SHORT).show();
+                }
 
-               }
+                // doPhotoPrint();
 
-               // close the renderer
-               renderer.close();
-           } catch (Exception ex) {
-               ex.printStackTrace();
-           }
+                break;
+            case R.id.tv_share:
+                sharePdf(position);
+                break;
+            case R.id.tv_view:
+                viewPdf(position);
+                break;
+        }
+        dismiss();
 
-           return bitmaps;
+    }
 
-       }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void doPhotoPrint() {
+        PrintHelper photoPrinter = new PrintHelper(getActivity());
+        photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
+        ArrayList<Bitmap> list = pdfToBitmap();
+//        for (int i=0;i<list.size();i++)
+//        {
+        photoPrinter.printBitmap("droids.jpg - test print", list.get(1));
+
+//        }
+    }
+
+    private PrintJob print(String name, PrintDocumentAdapter adapter,
+                           PrintAttributes attrs) {
+        getActivity().startService(new Intent(getActivity(), PrintJobMonitorService.class));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            return (mgr.print(name, adapter, attrs));
+        }
+        return null;
+    }
+
+    private void viewPdf(int position) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.fromFile(new File(FileUtils.getOutputMediaFileForPdf().getPath() + File.separator
+                + FileUtils.getOutputMediaFileForPdf().list()[position])), "application/pdf");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
+
+    }
+
+    private void sharePdf(int position) {
+        Intent share = new Intent();
+        share.setAction(Intent.ACTION_SEND);
+        share.setType("application/pdf");
+        share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(FileUtils.getOutputMediaFileForPdf().getPath() + File.separator
+                + FileUtils.getOutputMediaFileForPdf().list()[position])));
+        // share.setPackage("com.whatsapp");
+        startActivity(share);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private ArrayList<Bitmap> pdfToBitmap() {
+        ArrayList<Bitmap> bitmaps = new ArrayList<>();
+
+        try {
+            PdfRenderer renderer = new PdfRenderer(ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY));
+
+            Bitmap bitmap;
+            final int pageCount = renderer.getPageCount();
+            for (int i = 0; i < pageCount; i++) {
+                PdfRenderer.Page page = renderer.openPage(i);
+
+                int width = getResources().getDisplayMetrics().densityDpi / 72 * page.getWidth();
+                int height = getResources().getDisplayMetrics().densityDpi / 72 * page.getHeight();
+                bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+                page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
+
+                bitmaps.add(bitmap);
+
+                // close the page
+                page.close();
+
+            }
+
+            // close the renderer
+            renderer.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return bitmaps;
+
+    }
 
 
 }
