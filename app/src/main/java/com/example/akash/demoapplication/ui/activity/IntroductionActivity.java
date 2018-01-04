@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -24,11 +26,13 @@ import com.example.akash.demoapplication.R;
 import com.example.akash.demoapplication.constant.AppConstant;
 
 
-public class IntroductionActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
+public class IntroductionActivity extends BaseActivity implements  View.OnClickListener {
 
-    private Button btnGenerate;
+    private FloatingActionButton btnGenerate;
     private int position;
     private Button btnListPdf;
+    private RadioButton pdfBtn,docBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +43,16 @@ public class IntroductionActivity extends BaseActivity implements AdapterView.On
     }
 
     private void intiComponent() {
-        Spinner spinner = (Spinner) findViewById(R.id.spnCategory);
-        btnGenerate = (Button) findViewById(R.id.btnCreate);
+        //Spinner spinner = (Spinner) findViewById(R.id.spnCategory);
+        pdfBtn=(RadioButton)findViewById(R.id.rbtn_pdf);
+        docBtn=(RadioButton)findViewById(R.id.rbtn_doc);
+        btnGenerate = (FloatingActionButton) findViewById(R.id.btnCreate);
         btnListPdf = (Button) findViewById(R.id.btn_list_doccument);
         btnGenerate.setOnClickListener(this);
         btnListPdf.setOnClickListener(this);
+        pdfBtn.setChecked(true);
 
+        /*
         // Spinner click listener
         spinner.setOnItemSelectedListener(this);
 
@@ -54,17 +62,18 @@ public class IntroductionActivity extends BaseActivity implements AdapterView.On
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // attaching data adapter to spinner
-        spinner.setAdapter(dataAdapter);
+        spinner.setAdapter(dataAdapter);*/
 
 
     }
 
-    @Override
+    /*@Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
         String item = adapterView.getItemAtPosition(position).toString();
         if (position == 0) {
            // Toast.makeText(this, getResources().getString(R.string.please_select_category), Toast.LENGTH_LONG).show();
         } else {
+
             this.position = position;
         }
     }
@@ -72,12 +81,18 @@ public class IntroductionActivity extends BaseActivity implements AdapterView.On
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
-    }
+    }*/
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnCreate:
+                if(pdfBtn.isChecked()){
+                    position=0;
+                }else{
+                    position=1;
+                }
+                Log.e("status","**** position : "+position);
                 startActivity(new Intent(this, CameraActivity.class).putExtra(AppConstant.SOURCE, position));
                 break;
             case R.id.btn_list_doccument:
