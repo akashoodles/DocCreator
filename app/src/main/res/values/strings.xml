@@ -2,7 +2,7 @@
     <string name="app_name">Doc creater</string>
     <string name="please_select_category">Please select the category</string>
     <string name="convert_the_image">Select the output format</string>
-    <string name="select_any_pdf">Select a pdf to share , print , preview.</string>
+    <string name="select_any_pdf">Select a doccument to view, print, share .</string>
     <string name="view"> View</string>
     <string name="print"> Print</string>
     <string name="share"> Share</string>

@@ -91,6 +91,14 @@ public class CameraActivity extends BaseActivity implements View.OnClickListener
                         .show();
             }
         }
+        else if (requestCode==AppConstant.REQ_CAMERAACTIVITY)
+        {
+            if (resultCode==AppConstant.RES_CAMERAACTIVITY)
+            {
+                setResult(AppConstant.RES_PDFACTIVITY);
+                finish();
+            }
+        }
     }
 
     private void captureImage() {
@@ -142,7 +150,7 @@ public class CameraActivity extends BaseActivity implements View.OnClickListener
                 captureImage();
                 break;
             case R.id.btn_Done:
-              startActivity(new Intent(this,DoccumentGeneratorActivity.class).putExtra(AppConstant.SOURCE,getIntent().getIntExtra(AppConstant.SOURCE,0)));
+              startActivityForResult(new Intent(this,DoccumentGeneratorActivity.class).putExtra(AppConstant.SOURCE,getIntent().getIntExtra(AppConstant.SOURCE,0)),AppConstant.REQ_CAMERAACTIVITY);
                 break;
 
 
@@ -245,10 +253,7 @@ public class CameraActivity extends BaseActivity implements View.OnClickListener
     public  Bitmap rotate(Bitmap bitmap, float degrees) {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
-        float scaleWidth = ((float) super.width) / width;
-        float scaleHeight = ((float) super.width) / height;
         Matrix matrix = new Matrix();
-      //  matrix.postScale(scaleWidth, scaleHeight);
         matrix.postRotate(degrees);
         return Bitmap.createBitmap(bitmap, 0, 0,width,height, matrix, true);
     }

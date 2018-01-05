@@ -2,9 +2,9 @@ package com.example.akash.demoapplication.ui.activity;
 
 import android.animation.Animator;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,15 +20,17 @@ import com.example.akash.demoapplication.ui.adapter.PdfListAdapter;
 import com.example.akash.demoapplication.ui.fragment.PdfOperationFragment;
 import com.example.akash.demoapplication.utils.FileUtils;
 
-public class PdfListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener,View.OnClickListener{
+public class PdfListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
 
     private RecyclerView recyclerView;
     private PdfListAdapter adapter;
     private int position;
-    private LinearLayout pdfLayout,docLayout,listLayout,emptyLayout;
-    private FloatingActionButton pdfFab,docFab,baseFab;
+    private LinearLayout pdfLayout, docLayout, listLayout, emptyLayout;
+    private FloatingActionButton pdfFab, docFab, baseFab;
     private View fabBGLayout;
-    boolean isFABOpen=false;
+    boolean isFABOpen = false;
+    private String[] listPdf;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,14 +39,14 @@ public class PdfListActivity extends AppCompatActivity implements AdapterView.On
     }
 
     private void initComponent() {
-        emptyLayout=(LinearLayout)findViewById(R.id.empty_layout);
-        listLayout=(LinearLayout) findViewById(R.id.list_layout);
-        pdfLayout= (LinearLayout) findViewById(R.id.fabLayout1);
-        docLayout= (LinearLayout) findViewById(R.id.fabLayout2);
+        emptyLayout = (LinearLayout) findViewById(R.id.empty_layout);
+        listLayout = (LinearLayout) findViewById(R.id.list_layout);
+        pdfLayout = (LinearLayout) findViewById(R.id.fabLayout1);
+        docLayout = (LinearLayout) findViewById(R.id.fabLayout2);
         pdfFab = (FloatingActionButton) findViewById(R.id.fab1);
-        docFab= (FloatingActionButton) findViewById(R.id.fab2);
+        docFab = (FloatingActionButton) findViewById(R.id.fab2);
         baseFab = (FloatingActionButton) findViewById(R.id.fab3);
-        fabBGLayout=findViewById(R.id.fabBGLayout);
+        fabBGLayout = findViewById(R.id.fabBGLayout);
 
         baseFab.setOnClickListener(this);
         docFab.setOnClickListener(this);
@@ -56,17 +58,36 @@ public class PdfListActivity extends AppCompatActivity implements AdapterView.On
                 closeFABMenu();
             }
         });
-        recyclerView=(RecyclerView)findViewById(R.id.rcy_pdf_list);
+        listPdf = FileUtils.getOutputMediaFileForPdf().list();
+        recyclerView = (RecyclerView) findViewById(R.id.rcy_pdf_list);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        adapter=new PdfListAdapter(this);
-        recyclerView.setAdapter(adapter);
-        adapter.updateListData(FileUtils.getOutputMediaFileForPdf().list());
-     }
+        if (listPdf.length > 0) {
+            showPdfList(listPdf);
 
-    private void showFABMenu(){
-        isFABOpen=true;
+        } else {
+            listLayout.setVisibility(View.GONE);
+            emptyLayout.setVisibility(View.VISIBLE);
+
+        }
+
+    }
+
+    private void showPdfList(String[] listPdf) {
+        listLayout.setVisibility(View.VISIBLE);
+        emptyLayout.setVisibility(View.GONE);
+        if (adapter == null) {
+            adapter = new PdfListAdapter(this);
+            recyclerView.setAdapter(adapter);
+        }
+
+
+        adapter.updateListData(listPdf);
+    }
+
+    private void showFABMenu() {
+        isFABOpen = true;
         pdfLayout.setVisibility(View.VISIBLE);
         docLayout.setVisibility(View.VISIBLE);
         fabBGLayout.setVisibility(View.VISIBLE);
@@ -76,8 +97,8 @@ public class PdfListActivity extends AppCompatActivity implements AdapterView.On
         docLayout.animate().translationY(-getResources().getDimension(R.dimen.hundred_dp));
     }
 
-    private void closeFABMenu(){
-        isFABOpen=false;
+    private void closeFABMenu() {
+        isFABOpen = false;
         fabBGLayout.setVisibility(View.GONE);
         baseFab.animate().rotationBy(-135);
         pdfLayout.animate().translationY(0);
@@ -89,7 +110,7 @@ public class PdfListActivity extends AppCompatActivity implements AdapterView.On
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                if(!isFABOpen){
+                if (!isFABOpen) {
                     pdfLayout.setVisibility(View.GONE);
                     docLayout.setVisibility(View.GONE);
                 }
@@ -118,15 +139,14 @@ public class PdfListActivity extends AppCompatActivity implements AdapterView.On
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            PdfOperationFragment bottomSheetDialogFragment = new PdfOperationFragment();
-               Bundle bundle = new Bundle();
-              bundle.putInt(AppConstant.PDF_POSITION, i);
-                bottomSheetDialogFragment.setArguments(bundle);
-              bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
-       // showCustomDialog(i);
-        Toast.makeText(this,"position "+i,Toast.LENGTH_LONG);
+        PdfOperationFragment bottomSheetDialogFragment = new PdfOperationFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(AppConstant.PDF_POSITION, i);
+        bottomSheetDialogFragment.setArguments(bundle);
+        bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
+        // showCustomDialog(i);
+        Toast.makeText(this, "position " + i, Toast.LENGTH_LONG);
     }
-
 
 
     @Override
@@ -140,24 +160,40 @@ public class PdfListActivity extends AppCompatActivity implements AdapterView.On
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fab1:
-                position=0;
-                Log.e("status","**** position : "+position);
-                startActivity(new Intent(this, CameraActivity.class).putExtra(AppConstant.SOURCE, position));
+                position = 0;
+                Log.e("status", "**** position : " + position);
+                closeFABMenu();
+                startActivityForResult(new Intent(this, CameraActivity.class).putExtra(AppConstant.SOURCE, position), AppConstant.REQ_PDFACTIVITY);
                 break;
 
             case R.id.fab2:
-                position=1;
-                Log.e("status","**** position : "+position);
-                startActivity(new Intent(this, CameraActivity.class).putExtra(AppConstant.SOURCE, position));
+                position = 1;
+                Log.e("status", "**** position : " + position);
+                closeFABMenu();
+                startActivityForResult(new Intent(this, CameraActivity.class).putExtra(AppConstant.SOURCE, position), AppConstant.REQ_PDFACTIVITY);
                 break;
 
             case R.id.fab3:
-                if(!isFABOpen){
+                if (!isFABOpen) {
                     showFABMenu();
-                }else{
+                } else {
                     closeFABMenu();
                 }
                 break;
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AppConstant.REQ_PDFACTIVITY) {
+
+            if (resultCode == AppConstant.RES_PDFACTIVITY) {
+                showPdfList(FileUtils.getOutputMediaFileForPdf().list());
+            }
+
+
+        }
+    }
+
 }

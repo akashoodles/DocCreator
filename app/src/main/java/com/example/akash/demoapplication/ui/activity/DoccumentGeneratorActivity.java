@@ -113,7 +113,17 @@ public class DoccumentGeneratorActivity extends BaseActivity implements View.OnC
         Paragraph p = new Paragraph(c);
         p.setAlignment(Element.ALIGN_CENTER);
 
-
+//        PdfContentByte canvas = writer.getDirectContentUnder();
+//        InputStream ims = getAssets().open("logo.jpg");
+//        Bitmap bmp = BitmapFactory.decodeStream(ims);
+//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//        Image img1 = Image.getInstance(stream.toByteArray());
+//        img1.scalePercent(200f);
+//        img1.setAlignment(Element.ALIGN_TOP);
+//        img1.setAbsolutePosition(0, 0);
+//        canvas.addImage(img1);
+//
         Paragraph p2 = new Paragraph();
         InputStream ims = getAssets().open("logo.jpg");
         Bitmap bmp = BitmapFactory.decodeStream(ims);
@@ -132,18 +142,15 @@ public class DoccumentGeneratorActivity extends BaseActivity implements View.OnC
             img = Image.getInstance(image);
             document.newPage();
             document.setPageSize(PageSize.A4);
-
             document.setMargins(0, 0, 0, 0);
-
             img.scaleAbsolute(PageSize.A4);
-
             img.setAbsolutePosition(0, 0) ;
-
             document.add(img);
         }
         document.close();
         FileUtils.deletePicute();
-        startActivity(new Intent(this, PdfListActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+      setResult(AppConstant.RES_CAMERAACTIVITY);
+      finish();
 
         Log.e("complete pfd", ".......");
     }
@@ -173,7 +180,6 @@ public class DoccumentGeneratorActivity extends BaseActivity implements View.OnC
         File mediaFile;
         mediaFile = new File(FileUtils.getOutputMediaFileForPdf().getPath() + File.separator
                 + "PDF_" + timeStamp + ".pdf");
-
         return mediaFile.getAbsolutePath();
     }
 

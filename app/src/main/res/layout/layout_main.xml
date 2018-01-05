@@ -28,6 +28,7 @@
     </LinearLayout>
 
     <include
+        android:visibility="gone"
         android:id="@+id/list_layout"
         layout="@layout/activity_pdf_list"/>
 

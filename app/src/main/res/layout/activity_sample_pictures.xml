@@ -12,8 +12,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
    <Button
+       style="@style/DocCreator.commonbtn"
        android:id="@+id/btnGenerate"
-       android:layout_margin="20dp"
        android:layout_gravity="bottom"
        android:layout_width="match_parent"
        android:layout_height="wrap_content" />

@@ -15,7 +15,6 @@ import android.print.PageRange;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintDocumentInfo;
-import android.print.PrintJob;
 import android.print.PrintManager;
 import android.print.pdf.PrintedPdfDocument;
 import android.support.annotation.NonNull;
@@ -189,7 +188,7 @@ public class PdfOperationFragment extends BottomSheetDialogFragment implements V
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_lula_bottom_sheet_dialog, container, false);
+        View v = inflater.inflate(R.layout.fragment_pdf_operation, container, false);
         position = getArguments().getInt(AppConstant.PDF_POSITION);
         mgr = (PrintManager) getActivity().getSystemService(PRINT_SERVICE);
         v.findViewById(R.id.tv_print).setOnClickListener(this);
