@@ -13,7 +13,7 @@
     </string-array>
     <string name="create_pdf">Create new pdf</string>
     <string name="create_doc">Create new doc</string>
-
+    <string name="no_file_found">You currently have no documents created.\n Click on the \"+\" icon to create a new document.</string>
     <string-array name="generate_category">
 
         <item>c new docs</item>

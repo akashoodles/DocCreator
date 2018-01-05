@@ -6,4 +6,11 @@
     <dimen name="img_height">
         400dp
     </dimen>
+    <dimen name="fifty_five_dp">
+        55dp
+    </dimen>
+    <dimen name="hundred_dp">
+        100dp
+    </dimen>
+
 </resources>

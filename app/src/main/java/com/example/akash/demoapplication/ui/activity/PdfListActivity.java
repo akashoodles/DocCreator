@@ -1,19 +1,7 @@
 package com.example.akash.demoapplication.ui.activity;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
+import android.animation.Animator;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
-import android.os.CancellationSignal;
-import android.os.ParcelFileDescriptor;
-import android.print.PageRange;
-import android.print.PrintAttributes;
-import android.print.PrintDocumentAdapter;
-import android.print.PrintDocumentInfo;
-import android.print.PrintManager;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,9 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.akash.demoapplication.R;
@@ -34,30 +20,42 @@ import com.example.akash.demoapplication.ui.adapter.PdfListAdapter;
 import com.example.akash.demoapplication.ui.fragment.PdfOperationFragment;
 import com.example.akash.demoapplication.utils.FileUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 public class PdfListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener,View.OnClickListener{
 
     private RecyclerView recyclerView;
-    private File file;
     private PdfListAdapter adapter;
-    private FloatingActionButton btnGenerate;
-
+    private int position;
+    private LinearLayout pdfLayout,docLayout,listLayout,emptyLayout;
+    private FloatingActionButton pdfFab,docFab,baseFab;
+    private View fabBGLayout;
+    boolean isFABOpen=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pdf_list);
+        setContentView(R.layout.layout_main);
         initComponent();
     }
 
     private void initComponent() {
-        btnGenerate = (FloatingActionButton) findViewById(R.id.btnCreate);
+        emptyLayout=(LinearLayout)findViewById(R.id.empty_layout);
+        listLayout=(LinearLayout) findViewById(R.id.list_layout);
+        pdfLayout= (LinearLayout) findViewById(R.id.fabLayout1);
+        docLayout= (LinearLayout) findViewById(R.id.fabLayout2);
+        pdfFab = (FloatingActionButton) findViewById(R.id.fab1);
+        docFab= (FloatingActionButton) findViewById(R.id.fab2);
+        baseFab = (FloatingActionButton) findViewById(R.id.fab3);
+        fabBGLayout=findViewById(R.id.fabBGLayout);
+
+        baseFab.setOnClickListener(this);
+        docFab.setOnClickListener(this);
+        pdfFab.setOnClickListener(this);
+
+        fabBGLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                closeFABMenu();
+            }
+        });
         recyclerView=(RecyclerView)findViewById(R.id.rcy_pdf_list);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -65,18 +63,59 @@ public class PdfListActivity extends AppCompatActivity implements AdapterView.On
         adapter=new PdfListAdapter(this);
         recyclerView.setAdapter(adapter);
         adapter.updateListData(FileUtils.getOutputMediaFileForPdf().list());
-        btnGenerate.setOnClickListener(this);
-       // listView.setOnItemClickListener(this);
+     }
+
+    private void showFABMenu(){
+        isFABOpen=true;
+        pdfLayout.setVisibility(View.VISIBLE);
+        docLayout.setVisibility(View.VISIBLE);
+        fabBGLayout.setVisibility(View.VISIBLE);
+
+        baseFab.animate().rotationBy(135);
+        pdfLayout.animate().translationY(-getResources().getDimension(R.dimen.fifty_five_dp));
+        docLayout.animate().translationY(-getResources().getDimension(R.dimen.hundred_dp));
     }
 
-public  void callBootomSheetFragment(int position)
-{
-    PdfOperationFragment bottomSheetDialogFragment = new PdfOperationFragment();
-    Bundle bundle = new Bundle();
-    bundle.putInt(AppConstant.PDF_POSITION, position);
-    bottomSheetDialogFragment.setArguments(bundle);
-    bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
-}
+    private void closeFABMenu(){
+        isFABOpen=false;
+        fabBGLayout.setVisibility(View.GONE);
+        baseFab.animate().rotationBy(-135);
+        pdfLayout.animate().translationY(0);
+        docLayout.animate().translationY(0).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                if(!isFABOpen){
+                    pdfLayout.setVisibility(View.GONE);
+                    docLayout.setVisibility(View.GONE);
+                }
+
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
+    }
+
+    public void callBootomSheetFragment(int position) {
+        PdfOperationFragment bottomSheetDialogFragment = new PdfOperationFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(AppConstant.PDF_POSITION, position);
+        bottomSheetDialogFragment.setArguments(bundle);
+        bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
+    }
+
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             PdfOperationFragment bottomSheetDialogFragment = new PdfOperationFragment();
@@ -92,7 +131,7 @@ public  void callBootomSheetFragment(int position)
 
     @Override
     public void onBackPressed() {
-startActivity(new Intent(this,IntroductionActivity.class));
+        super.onBackPressed();
         finish();
     }
 
@@ -100,16 +139,25 @@ startActivity(new Intent(this,IntroductionActivity.class));
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnCreate:
-//                if(pdfBtn.isChecked()){
-//                    position=0;
-//                }else{
-//                    position=1;
-//                }
-//                Log.e("status","**** position : "+position);
-                startActivity(new Intent(this, CameraActivity.class).putExtra(AppConstant.SOURCE, 0));
+            case R.id.fab1:
+                position=0;
+                Log.e("status","**** position : "+position);
+                startActivity(new Intent(this, CameraActivity.class).putExtra(AppConstant.SOURCE, position));
                 break;
 
+            case R.id.fab2:
+                position=1;
+                Log.e("status","**** position : "+position);
+                startActivity(new Intent(this, CameraActivity.class).putExtra(AppConstant.SOURCE, position));
+                break;
+
+            case R.id.fab3:
+                if(!isFABOpen){
+                    showFABMenu();
+                }else{
+                    closeFABMenu();
+                }
+                break;
         }
     }
 }

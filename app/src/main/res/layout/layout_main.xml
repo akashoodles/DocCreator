@@ -1,0 +1,115 @@
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+    <!-- include main layout here-->
+    <LinearLayout
+        android:id="@+id/empty_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/empty_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_emptydoc"
+            android:layout_gravity="center"/>
+        <com.example.akash.demoapplication.utils.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:textFont="@string/lato_bold"
+            android:gravity="center"
+            android:text="@string/no_file_found"/>
+    </LinearLayout>
+
+    <include
+        android:id="@+id/list_layout"
+        layout="@layout/activity_pdf_list"/>
+
+    <View
+        android:id="@+id/fabBGLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent_gray_shade_darkest"
+        android:visibility="gone"/>
+    <LinearLayout
+    android:id="@+id/fabLayout1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="23dp"
+    android:padding="12dp"
+    android:clipToPadding="false"
+    android:gravity="center_vertical"
+    android:layout_marginBottom="23dp"
+    android:layout_gravity="bottom|end"
+    android:visibility="gone">
+        <com.example.akash.demoapplication.utils.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            app:textFont="@string/lato_bold"
+        android:text="@string/create_pdf"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        app:srcCompat="@drawable/ic_pdf"
+        app:fabSize="mini"/>
+</LinearLayout>
+
+<LinearLayout
+android:id="@+id/fabLayout2"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:padding="12dp"
+android:clipToPadding="false"
+android:layout_marginRight="23dp"
+android:gravity="center_vertical"
+android:layout_marginBottom="23dp"
+android:layout_gravity="bottom|end"
+android:visibility="gone">
+
+<com.example.akash.demoapplication.utils.CustomTextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textColor="@color/white"
+    app:textFont="@string/lato_bold"
+    android:text="@string/create_doc"/>
+
+<android.support.design.widget.FloatingActionButton
+    android:id="@+id/fab2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    app:srcCompat="@drawable/ic_doc"
+    app:fabSize="mini" />
+</LinearLayout>
+    <LinearLayout
+        android:id="@+id/fabLayout3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:clipToPadding="false"
+        android:layout_marginRight="23dp"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="23dp"
+        android:layout_gravity="bottom|end">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            app:srcCompat="@drawable/ic_add_white_24dp"
+            app:fabSize="mini"
+            />
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

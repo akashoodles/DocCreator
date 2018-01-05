@@ -1,26 +1,14 @@
 package com.example.akash.demoapplication.ui.activity;
 
-import android.Manifest;
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.animation.Animator;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.example.akash.demoapplication.R;
 import com.example.akash.demoapplication.constant.AppConstant;
@@ -31,13 +19,15 @@ public class IntroductionActivity extends BaseActivity implements  View.OnClickL
     private FloatingActionButton btnGenerate;
     private int position;
     private Button btnListPdf;
-    private RadioButton pdfBtn,docBtn;
-
-
+    private RadioButton pdfBtn;
+    private LinearLayout pdfLayout,docLayout;
+    private FloatingActionButton pdfFab,docFab,baseFab;
+    private View fabBGLayout;
+    boolean isFABOpen=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_introduction);
+        setContentView(R.layout.layout_main);
 //        checkPermission();
         intiComponent();
     }
@@ -45,13 +35,29 @@ public class IntroductionActivity extends BaseActivity implements  View.OnClickL
     private void intiComponent() {
         //Spinner spinner = (Spinner) findViewById(R.id.spnCategory);
         pdfBtn=(RadioButton)findViewById(R.id.rbtn_pdf);
-        docBtn=(RadioButton)findViewById(R.id.rbtn_doc);
-        btnGenerate = (FloatingActionButton) findViewById(R.id.btnCreate);
-        btnListPdf = (Button) findViewById(R.id.btn_list_doccument);
-        btnGenerate.setOnClickListener(this);
-        btnListPdf.setOnClickListener(this);
+        //docBtn=(RadioButton)findViewById(R.id.rbtn_doc);
         pdfBtn.setChecked(true);
 
+
+
+        pdfLayout= (LinearLayout) findViewById(R.id.fabLayout1);
+        docLayout= (LinearLayout) findViewById(R.id.fabLayout2);
+        pdfFab = (FloatingActionButton) findViewById(R.id.fab1);
+        docFab= (FloatingActionButton) findViewById(R.id.fab2);
+        baseFab = (FloatingActionButton) findViewById(R.id.fab3);
+        fabBGLayout=findViewById(R.id.fabBGLayout);
+
+        baseFab.setOnClickListener(this);
+        docFab.setOnClickListener(this);
+        pdfFab.setOnClickListener(this);
+
+        fabBGLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                closeFABMenu();
+            }
+        });
+    }
         /*
         // Spinner click listener
         spinner.setOnItemSelectedListener(this);
@@ -65,6 +71,49 @@ public class IntroductionActivity extends BaseActivity implements  View.OnClickL
         spinner.setAdapter(dataAdapter);*/
 
 
+
+
+    private void showFABMenu(){
+        isFABOpen=true;
+        pdfLayout.setVisibility(View.VISIBLE);
+        docLayout.setVisibility(View.VISIBLE);
+        fabBGLayout.setVisibility(View.VISIBLE);
+
+        baseFab.animate().rotationBy(135);
+        pdfLayout.animate().translationY(-getResources().getDimension(R.dimen.fifty_five_dp));
+        docLayout.animate().translationY(-getResources().getDimension(R.dimen.hundred_dp));
+    }
+
+    private void closeFABMenu(){
+        isFABOpen=false;
+        fabBGLayout.setVisibility(View.GONE);
+        baseFab.animate().rotationBy(-135);
+        pdfLayout.animate().translationY(0);
+        docLayout.animate().translationY(0).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                if(!isFABOpen){
+                    pdfLayout.setVisibility(View.GONE);
+                    docLayout.setVisibility(View.GONE);
+                }
+
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
     }
 
     /*@Override
@@ -86,19 +135,27 @@ public class IntroductionActivity extends BaseActivity implements  View.OnClickL
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btnCreate:
-                if(pdfBtn.isChecked()){
-                    position=0;
-                }else{
-                    position=1;
-                }
+            case R.id.fab1:
+                position=0;
                 Log.e("status","**** position : "+position);
                 startActivity(new Intent(this, CameraActivity.class).putExtra(AppConstant.SOURCE, position));
                 break;
-            case R.id.btn_list_doccument:
-                startActivity(new Intent(this, PdfListActivity.class));
-                finish();
+
+            case R.id.fab2:
+                position=1;
+                Log.e("status","**** position : "+position);
+                startActivity(new Intent(this, CameraActivity.class).putExtra(AppConstant.SOURCE, position));
                 break;
+
+            case R.id.fab3:
+                if(!isFABOpen){
+                    showFABMenu();
+                }else{
+                    closeFABMenu();
+                }
+                break;
+
+
         }
 
     }
