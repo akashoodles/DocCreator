@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.akash.demoapplication.ui.activity.PdfListActivity"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.akash.demoapplication.ui.activity.PdfListActivity">
+  >
     <TextView
-      android:layout_marginLeft="9dp"
-        android:textStyle="bold"
+        android:elevation="3dp"
+       android:layout_marginLeft="9dp"
+        android:textStyle="normal"
         android:id="@+id/txv_heading"
         android:layout_marginBottom="4dp"
         android:textSize="17sp"
@@ -16,13 +19,24 @@
         android:text="@string/select_any_pdf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <ListView
-        android:elevation="2dp"
+    <android.support.v7.widget.RecyclerView
+
         android:layout_marginBottom="2dp"
         android:background="@drawable/listview_boder"
         android:layout_below="@+id/txv_heading"
-        android:id="@+id/lv_pdf_list"
+        android:id="@+id/rcy_pdf_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_height="match_parent">
+    </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnCreate"
+        android:src="@drawable/ic_add_white_24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="10dp"
+        />
+</FrameLayout>

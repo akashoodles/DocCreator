@@ -59,7 +59,17 @@ public class DoccumentGeneratorActivity extends BaseActivity implements View.OnC
         btngenerate = (Button) findViewById(R.id.btnGenerate);
         btngenerate.setText(getResources().getStringArray(R.array.category)[getIntent().getIntExtra(AppConstant.SOURCE, 0)]);
         btngenerate.setOnClickListener(this);
-
+//        File imgFile = new  File("/sdcard/Images/test_image.jpg");
+//
+//        if(imgFile.exists()){
+//
+//            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+//
+//            ImageView myImage = (ImageView) findViewById(R.id.imageviewTest);
+//
+//            myImage.setImageBitmap(myBitmap);
+//
+//        }
     }
 
     private ArrayList<String> getAllMediaPath() {
@@ -92,12 +102,18 @@ public class DoccumentGeneratorActivity extends BaseActivity implements View.OnC
         Log.e("create pfd", ".......");
         Image img = Image.getInstance(getAllMediaPath().get(0));
         Document document = new Document(PageSize.A4);
+
+
+       // document.setMargins(0, 0,200, 0);
+        PdfWriter writer=PdfWriter.getInstance(document, new FileOutputStream(dest));
         document.open();
         document.setMargins(0,0,200,0);
         Font f = new Font(Font.FontFamily.TIMES_ROMAN, 25, Font.BOLD, BaseColor.BLACK);
         Chunk c = new Chunk("  Created by " + "\n" + "Document Creator \npowered by Oodles technologies pvt ltd.", f);
         Paragraph p = new Paragraph(c);
         p.setAlignment(Element.ALIGN_CENTER);
+
+
         Paragraph p2 = new Paragraph();
         InputStream ims = getAssets().open("logo.jpg");
         Bitmap bmp = BitmapFactory.decodeStream(ims);
@@ -116,8 +132,11 @@ public class DoccumentGeneratorActivity extends BaseActivity implements View.OnC
             img = Image.getInstance(image);
             document.newPage();
             document.setPageSize(PageSize.A4);
+
             document.setMargins(0, 0, 0, 0);
+
             img.scaleAbsolute(PageSize.A4);
+
             img.setAbsolutePosition(0, 0) ;
 
             document.add(img);

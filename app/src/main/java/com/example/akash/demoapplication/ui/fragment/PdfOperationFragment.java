@@ -33,7 +33,6 @@ import android.widget.Toast;
 
 import com.example.akash.demoapplication.R;
 import com.example.akash.demoapplication.constant.AppConstant;
-import com.example.akash.demoapplication.service.PrintJobMonitorService;
 import com.example.akash.demoapplication.utils.FileUtils;
 
 import java.io.File;
@@ -207,10 +206,7 @@ public class PdfOperationFragment extends BottomSheetDialogFragment implements V
             case R.id.tv_print:
                 file = new File(FileUtils.getOutputMediaFileForPdf().getPath() + File.separator
                         + FileUtils.getOutputMediaFileForPdf().list()[position]);
-//                    Intent printIntent = new Intent(getActivity(), PrintDialogActivity.class);
-//                    printIntent.setDataAndType(Uri.fromFile(file), "MIME");
-//                    printIntent.putExtra("title", "");
-//                    startActivity(printIntent);
+
                 PrintManager printManager = (PrintManager) getActivity().getSystemService(Context.PRINT_SERVICE);
                 PrintAttributes pdfPrintAttrs = new PrintAttributes.Builder().
                         setMediaSize(PrintAttributes.MediaSize.ISO_A4).
@@ -249,15 +245,7 @@ public class PdfOperationFragment extends BottomSheetDialogFragment implements V
 //        }
     }
 
-    private PrintJob print(String name, PrintDocumentAdapter adapter,
-                           PrintAttributes attrs) {
-        getActivity().startService(new Intent(getActivity(), PrintJobMonitorService.class));
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            return (mgr.print(name, adapter, attrs));
-        }
-        return null;
-    }
 
     private void viewPdf(int position) {
         Intent intent = new Intent(Intent.ACTION_VIEW);

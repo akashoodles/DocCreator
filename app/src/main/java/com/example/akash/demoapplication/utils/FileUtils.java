@@ -64,21 +64,5 @@ public  class FileUtils {
             currentFile.delete();
         }
     }
-    public static Bitmap rotate(Bitmap bitmap, int degree,int newHeight,int newWidth) {
 
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        // create a matrix for the manipulation
-        Matrix matrix = new Matrix();
-        // resize the bit map
-        matrix.postScale(scaleWidth, scaleHeight);
-        matrix.postRotate(degree);
-        // recreate the new Bitmap
-//        Matrix mtx = new Matrix();
-
-
-        return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
-    }
 }

@@ -4,5 +4,6 @@
     <!-- <solid android:color="#00000000" /> -->
     <!-- use this for a background colour -->
     <solid android:color="@color/white" />
-    <stroke android:width="10dip" android:color="@color/gray_light_bg" />
+    <stroke android:width="10dip"
+        android:color="@color/gray_light_bg" />
 </shape>
